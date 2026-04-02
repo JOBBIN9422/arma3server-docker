@@ -1,0 +1,17 @@
+battlEye = 0;
+passwordAdmin = "PASSWORD";
+password = "PASSWORD";
+hostname = "YOUR SERVERNAME";
+maxPlayers = 32;
+
+headlessClients[] = {"127.0.0.1"};
+localClients[]    = {"127.0.0.1"};
+
+class Missions
+{
+	class Antistasi
+	{
+		template = "Antistasi_Tembelan.Tembelan";
+		difficulty = "custom";
+	};
+};
