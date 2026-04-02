@@ -14,6 +14,8 @@ services:
       - NUM_HEADLESS_CLIENTS=${NUM_HEADLESS_CLIENTS:-0}
     volumes:
       - ./arma3-server-mount:/home/arma3/arma3server
-      #- ./arma3-steam-cache-mount:/home/arma3/.local/share/Steam
+      - arma3server-steam:/home/arma3/.local/share/Steam
     stdin_open: true
     tty: true
+volumes:
+    arma3server-steam:

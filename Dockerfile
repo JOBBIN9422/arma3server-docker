@@ -18,6 +18,10 @@ COPY entrypoint.sh /home/arma3/entrypoint.sh
 RUN chown arma3 /home/arma3/entrypoint.sh
 RUN chmod a+x /home/arma3/entrypoint.sh
 
+# precreate steam install dir and chown to prevent named volume permissions issues
+RUN mkdir -p /home/arma3/.local/share/Steam /home/arma3/arma3server && \
+    chown -R arma3:arma3 /home/arma3/.local /home/arma3/arma3server
+
 USER arma3
 # copy required files to the server install dir, set ownership & permissions
 #USER root
