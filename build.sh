@@ -1,1 +1,1 @@
-docker build -t arma3server .
+docker compose up -d --build arma3server
