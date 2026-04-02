@@ -15,6 +15,7 @@ services:
     volumes:
       - ./arma3-server-mount:/home/arma3/arma3server
       - arma3server-steam:/home/arma3/.local/share/Steam
+      - "./arma3-profiles:/home/arma3/.local/share/Arma 3 - Other Profiles"
     stdin_open: true
     tty: true
 volumes:
