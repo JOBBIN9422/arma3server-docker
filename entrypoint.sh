@@ -69,7 +69,7 @@ if [[ "${NUM_HEADLESS_CLIENTS}" -gt 0 ]]; then
     for i in $(seq 1 "${NUM_HEADLESS_CLIENTS}")
     do
         echo "start Headless Client #$i"
-        ./arma3server_x64 -client -connect=127.0.0.1 -password="${SERVER_PASS}" -mod="${mod_cmd_line_str}" -name="{HC_$i}" &
+        ./arma3server_x64 -client -connect=127.0.0.1 -password="${SERVER_PASS}" -mod="${mod_cmd_line_str}" -name="HC_${i}" &
     done
 fi
 
