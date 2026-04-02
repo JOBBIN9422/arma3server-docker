@@ -1,1 +1,1 @@
-docker compose stop arma3server
+docker compose stop arma3-server

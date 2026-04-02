@@ -1,1 +1,1 @@
-docker compose start arma3server -d
+docker compose start arma3-server

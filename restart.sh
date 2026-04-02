@@ -1,1 +1,1 @@
-docker compose restart arma3server
+docker compose restart arma3-server
