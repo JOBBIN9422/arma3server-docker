@@ -4,6 +4,7 @@ FROM steamcmd/steamcmd:debian-trixie
 RUN apt-get update && apt-get install -y --no-install-recommends \
     vim \
     procps \
+    iproute2 \
     && rm -rf /var/lib/apt/lists/*
 
 # create a user for running the server
