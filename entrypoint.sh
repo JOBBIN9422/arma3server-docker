@@ -1,11 +1,15 @@
 #!/bin/bash
 
-# download ARMA 3 server and creator DLCs
-echo "begin download ARMA 3 server"
-steamcmd +force_install_dir /home/arma3/arma3server \
-         +login ${STEAM_USER} ${STEAM_PASS} \
-         +app_update 233780 -beta creatordlc validate \
-         +quit 
+echo "START ENTRYPOINT.SH"
+
+if [[ "${UPDATE_SERVER}" == "true" ]]; then
+    # download ARMA 3 server and creator DLCs
+    echo "begin download ARMA 3 server"
+    steamcmd +force_install_dir /home/arma3/arma3server \
+             +login ${STEAM_USER} ${STEAM_PASS} \
+             +app_update 233780 -beta creatordlc validate \
+             +quit 
+fi
 
 # read the modlist and download each mod 
 echo "begin processing modlist.txt"
@@ -14,11 +18,13 @@ while IFS= read -r line; do
     mod_id=$(echo ${line} | cut -d ',' -f 1)
     mod_symlink_name=$(echo ${line} | cut -d ',' -f 2)
 
-    # download the mod via steamcmd
-    steamcmd +login ${STEAM_USER} ${STEAM_PASS} \
-	     +workshop_download_item 107410 ${mod_id} +quit
+    if [[ "${UPDATE_MODS}" == "true" ]]; then
+        # download the mod via steamcmd
+        steamcmd +login ${STEAM_USER} ${STEAM_PASS} \
+    	         +workshop_download_item 107410 ${mod_id} +quit
+    fi
 
-    mod_path="/home/arma3/.steam/steam/steamapps/workshop/content/107410/${mod_id}"
+    mod_path="/home/arma3/.local/share/Steam/steamapps/workshop/content/107410/${mod_id}"
     
     # recursively lowercase everything in the downloaded mod folder (Gemini told me how to do this - fair warning)
     echo "normalizing case for mod ${mod_id}..."
@@ -52,17 +58,19 @@ echo "mod list: ${mod_cmd_line_str}"
 
 # start the server
 echo "start ARMA 3 server"
-./arma3server_x64 -name=server -config=server.cfg -mod="${mod_cmd_line_str}" &
+./arma3server_x64 -name=server -config=server.cfg -mod="${mod_cmd_line_str}" -malloc=system &
 SERVER_PID=$!
 
 # wait for the server to init before spawning HCs
 sleep 30
 
-# start headless clients
-for i in {1..3}
-do
-    echo "start Headless Client #$i"
-    ./arma3server_x64 -client -connect=127.0.0.1 -password="${SERVER_PASS}" -mod="${mod_cmd_line_str}" -name=HC_$i &
-done
+if [[ "${NUM_HEADLESS_CLIENTS}" -gt 0 ]]; then
+    # start headless clients
+    for i in $(seq 1 "${NUM_HEADLESS_CLIENTS}")
+    do
+        echo "start Headless Client #$i"
+        ./arma3server_x64 -client -connect=127.0.0.1 -password="${SERVER_PASS}" -mod="${mod_cmd_line_str}" -name="{HC_$i}" &
+    done
+fi
 
 wait $SERVER_PID

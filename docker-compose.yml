@@ -1,0 +1,19 @@
+services:
+  arma3-server:
+    build: .
+    container_name: arma3server
+    restart: unless-stopped
+    ports:
+      - "2302-2306:2302-2306/udp"
+    environment:
+      - STEAM_USER=${STEAM_USER}
+      - STEAM_PASS=${STEAM_PASS}
+      - SERVER_PASS=${SERVER_PASS}
+      - UPDATE_SERVER=${UPDATE_SERVER:-false}
+      - UPDATE_MODS=${UPDATE_MODS:-false}
+      - NUM_HEADLESS_CLIENTS=${NUM_HEADLESS_CLIENTS:-0}
+    volumes:
+      - ./arma3-server-mount:/home/arma3/arma3server
+      #- ./arma3-steam-cache-mount:/home/arma3/.local/share/Steam
+    stdin_open: true
+    tty: true
