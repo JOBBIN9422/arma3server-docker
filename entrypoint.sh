@@ -92,7 +92,7 @@ if [[ "${NUM_HEADLESS_CLIENTS}" -gt 0 ]]; then
     do
         echo "start headless client #${i}"
         ./arma3server_x64 -client -connect=127.0.0.1 -password="${SERVER_PASS}" -mod="${mod_cmd_line_str}" -name="HC_${i}" -nosound -nopause -nosplash &
-	sleep 30
+	sleep 60
     done
 fi
 
